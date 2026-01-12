@@ -1,7 +1,4 @@
-
----
-
-# 🛡️ Policy-Constrained AI Payments with MNEE
+# TrustFlow🛡️ : Policy-Constrained AI Payments with MNEE
 
 A guard-railed AI agent that can autonomously spend **MNEE stablecoin** only within cryptographically enforced trust boundaries — enabling safe agent-driven commerce and automated finance.
 
