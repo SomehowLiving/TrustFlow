@@ -9,12 +9,29 @@ contract MNEEPolicyExecutor {
     IERC20 public immutable mnee;
     address public owner;
 
+    event PolicySet(
+        address indexed agent,
+        uint256 maxPerTx,
+        uint256 dailyCap,
+        uint256 weeklyCap,
+        uint64 validFrom,
+        uint64 validUntil
+    );
+
+    event PaymentExecuted(
+        address indexed agent,
+        address indexed recipient,
+        uint256 amount,
+        uint256 spentToday,
+        uint256 spentThisWeek
+    );
+
     struct Policy {
         uint256 maxPerTx;
         uint256 dailyCap;
         uint256 weeklyCap;
-        uint64  validFrom;
-        uint64  validUntil;
+        uint64 validFrom;
+        uint64 validUntil;
     }
 
     struct SpendState {
@@ -53,12 +70,17 @@ contract MNEEPolicyExecutor {
             validFrom,
             validUntil
         );
+        emit PolicySet(
+            agent,
+            maxPerTx,
+            dailyCap,
+            weeklyCap,
+            validFrom,
+            validUntil
+        );
     }
 
-    function executePayment(
-        address recipient,
-        uint256 amount
-    ) external {
+    function executePayment(address recipient, uint256 amount) external {
         Policy memory p = policies[msg.sender];
         require(p.validFrom != 0, "No policy");
         require(block.timestamp >= p.validFrom, "Not active");
@@ -87,5 +109,29 @@ contract MNEEPolicyExecutor {
         s.spentThisWeek += amount;
 
         require(mnee.transfer(recipient, amount), "Transfer failed");
+
+        emit PaymentExecuted(
+            msg.sender,
+            recipient,
+            amount,
+            s.spentToday,
+            s.spentThisWeek
+        );
+    }
+
+    function getSpendState(
+        address agent
+    )
+        external
+        view
+        returns (
+            uint256 spentToday,
+            uint256 spentThisWeek,
+            uint64 lastDay,
+            uint64 lastWeek
+        )
+    {
+        SpendState memory s = spend[agent];
+        return (s.spentToday, s.spentThisWeek, s.lastDay, s.lastWeek);
     }
 }

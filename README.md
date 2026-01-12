@@ -97,7 +97,7 @@ MNEE Stablecoin (Ethereum)
 ```
 > The onchain contract acts as the final enforcement layer, ensuring no payment can bypass defined limits even if the agent runtime is compromised.
 
-**THE contract(MNEE Policy Executor)is deployed at : 0x8585C62528b4fbC7DF114aba429fA085C453823B [View](https://repo.sourcify.dev/11155111/0x8585C62528b4fbC7DF114aba429fA085C453823B)**
+**The contract(MNEE Policy Executor)is deployed at : 0xB7BdA0b6a477db6c370B6e83311Efe1092Ba6a08 [View](https://eth-sepolia.blockscout.com/address/0xB7BdA0b6a477db6c370B6e83311Efe1092Ba6a08?tab=contract)**
 
 ### Core Components
 
